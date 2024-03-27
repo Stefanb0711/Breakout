@@ -1,5 +1,5 @@
 import pygame
-from GameElements import Player, game_over
+from GameElements import Player, game_over, Ball
 
 
 win = pygame.display.set_mode((600, 800))
@@ -10,13 +10,14 @@ pygame.display.set_caption("Breakout")
 clock = pygame.time.Clock()
 
 player = Player()
-
+ball = Ball()
 
 
 def redrawGameWindow():
 
 
     player.draw(win=win)
+    ball.draw(win=win)
 
     pygame.display.update()
 
