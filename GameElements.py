@@ -81,7 +81,7 @@ class Ball:
         self.start_position = [self.x, self.y]
         self.heading_degrees = random.randrange(20, 160)
 
-        self.vel = 5
+        self.vel = 10
 
 
 
@@ -129,10 +129,10 @@ class Ball:
 
             self.heading_rad = math.radians(self.heading_degrees)
 
-        elif any(abs(self.x - obstacle[0]) < 50 and abs(self.y - obstacle[1]) < 20 for obstacle in obstacles):
+        elif any((self.x - obstacle[0] < 70) and (self.x - obstacle[0] > -10) and abs(self.y - obstacle[1]) < 20 for obstacle in obstacles):
 
             for obstacle in obstacles:
-                if abs(self.x - obstacle[0]) < 50 and abs(self.y - obstacle[1]) < 20:
+                if abs(self.x - obstacle[0]) < 70 and abs(self.y - obstacle[1]) < 20:
                     obstacle_to_remove = obstacle
                     break
 
@@ -151,7 +151,7 @@ class Ball:
 class Obstacles:
     def __init__(self):
         self.number_of_obstacles = 10
-        self.obstacles = [[0, 0]]
+        self.obstacles = []
 
         self.obstacle_width = 60
         self.obstacle_height = 20
@@ -159,6 +159,8 @@ class Obstacles:
 
     def draw(self, win):
         for obstacle in self.obstacles:
+
+
             pygame.draw.rect(win, BLUE, (obstacle[0], obstacle[1], self.obstacle_width, self.obstacle_height))
 
 
