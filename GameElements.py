@@ -124,12 +124,12 @@ class Ball:
             game_over = True
             #pygame.quit()
 
-        elif abs(self.x - player.x) < 50 and abs(self.y - player.y) < 20:
+        elif (self.x + self.radius - player.x) < 80 and (self.x + self.radius - player.x > -10) and abs(self.y - player.y) < 20:
             self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
 
             self.heading_rad = math.radians(self.heading_degrees)
 
-        elif any((self.x - obstacle[0] < 70) and (self.x - obstacle[0] > -10) and abs(self.y - obstacle[1]) < 20 for obstacle in obstacles):
+        elif any((self.x + self.radius - obstacle[0] < 70) and (self.x + self.radius - obstacle[0] > -10) and abs(self.y - obstacle[1]) < 20 for obstacle in obstacles):
 
             for obstacle in obstacles:
                 if abs(self.x - obstacle[0]) < 70 and abs(self.y - obstacle[1]) < 20:
@@ -150,7 +150,7 @@ class Ball:
 
 class Obstacles:
     def __init__(self):
-        self.number_of_obstacles = 10
+        self.number_of_obstacles = 20
         self.obstacles = []
 
         self.obstacle_width = 60
