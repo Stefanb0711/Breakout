@@ -1,5 +1,5 @@
 import pygame
-from GameElements import Player, game_over, Ball
+from GameElements import Player, game_over, Ball, Obstacles
 
 
 win = pygame.display.set_mode((600, 800))
@@ -11,13 +11,15 @@ clock = pygame.time.Clock()
 
 player = Player()
 ball = Ball()
+obstacle_manager = Obstacles()
 
 
 def redrawGameWindow():
 
-
     player.draw(win=win)
-    ball.draw(win=win)
+    ball.draw(win=win, player=player, obstacles=obstacle_manager.obstacles)
+    obstacle_manager.draw(win=win)
+
 
     pygame.display.update()
 

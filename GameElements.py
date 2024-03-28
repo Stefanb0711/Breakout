@@ -7,7 +7,7 @@ import math
 game_over = False
 
 RED = (255, 0, 0)
-BLUE = (0, 255, 0)
+BLUE = (0, 0 , 255)
 WHITE = (255, 255, 255)
 
 background = pygame.image.load("Bilder/Hintergrund.png")
@@ -96,7 +96,7 @@ class Ball:
 
 
 
-    def draw(self, win):
+    def draw(self, win, player, obstacles):
         global game_over
 
 
@@ -124,8 +124,23 @@ class Ball:
             game_over = True
             #pygame.quit()
 
-        elif self.y <= 0:
-            pass
+        elif abs(self.x - player.x) < 50 and abs(self.y - player.y) < 20:
+            self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
+
+            self.heading_rad = math.radians(self.heading_degrees)
+
+        elif any(abs(self.x - obstacle[0]) < 50 and abs(self.y - obstacle[1]) < 20 for obstacle in obstacles):
+
+            for obstacle in obstacles:
+                if abs(self.x - obstacle[0]) < 50 and abs(self.y - obstacle[1]) < 20:
+                    obstacle_to_remove = obstacle
+                    break
+
+            obstacles.remove(obstacle)
+            self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
+
+            self.heading_rad = math.radians(self.heading_degrees)
+
 
 
         pygame.draw.circle(surface=win, color=RED, center=(self.x, self.y), radius=self.radius)
@@ -135,6 +150,31 @@ class Ball:
 
 class Obstacles:
     def __init__(self):
-        pass
+        self.number_of_obstacles = 10
+        self.obstacles = [[0, 0]]
+
+        self.obstacle_width = 60
+        self.obstacle_height = 20
+        self.create_obstacles()
+
+    def draw(self, win):
+        for obstacle in self.obstacles:
+            pygame.draw.rect(win, BLUE, (obstacle[0], obstacle[1], self.obstacle_width, self.obstacle_height))
+
+
+    def create_obstacles(self):
+        for obstacle in range(self.number_of_obstacles):
+            obstacle_x = random.randrange(20, 580)
+            obstacle_y = random.randrange(50, 400)
+
+            """"""
+            while any(abs(obstacle_x - other_obstacle[0]) < 50 and abs(obstacle_y - other_obstacle[1]) < 50 for other_obstacle in self.obstacles):
+
+                obstacle_x = random.randrange(20, 580)
+                obstacle_y = random.randrange(50, 400)
+
+            self.obstacles.append([obstacle_x, obstacle_y])
+
+
 
 
