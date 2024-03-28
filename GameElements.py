@@ -31,6 +31,17 @@ def calculate_bounce_angle(incoming_angle, surface_angle):
     return reflected_angle_deg
 
 
+def abprallwinkel_berechnen(einfallswinkel, wandwinkel):
+    einfallswinkel %= 360
+    wandwinkel %= 360
+
+    winkeldifferenz = einfallswinkel - wandwinkel
+    ausfallwinkel = wandwinkel - winkeldifferenz
+    ausfallwinkel = (ausfallwinkel + 360) % 360
+
+    return ausfallwinkel
+
+
 
 class Player:
     def __init__(self):
@@ -68,16 +79,15 @@ class Ball:
         self.x = 400
         self.y = 500
         self.start_position = [self.x, self.y]
-        self.heading = random.randrange(20, 160)
+        self.heading_degrees = random.randrange(20, 160)
 
         self.vel = 5
 
 
 
-        self.angle_radians = math.radians(self.heading)
+        self.heading_rad = math.radians(self.heading_degrees)
 
-        self.reflected_heading_degrees = math.degrees(self.angle_radians)
-        #print(f"Bounce Angle: ")
+
 
 
 
@@ -90,8 +100,8 @@ class Ball:
         global game_over
 
 
-        velocity_x = self.vel * math.cos(self.angle_radians)
-        velocity_y = self.vel * math.sin(self.angle_radians)
+        velocity_x = self.vel * math.cos(self.heading_rad)
+        velocity_y = self.vel * math.sin(self.heading_rad)
 
 
         self.x += velocity_x
@@ -99,11 +109,17 @@ class Ball:
 
 
         if self.x >= 600 - self.radius or self.x <= 0 + self.radius:
-            self.angle_radians = calculate_bounce_angle(self.reflected_heading_degrees, 90)
+            self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 90)
+
+            self.heading_rad = math.radians(self.heading_degrees)
+
+            #self.heading_angle = math.radians(self.heading_angle)
 
 
-        elif self.y >= 800:
-            self.angle_radians = calculate_bounce_angle(self.reflected_heading_degrees, 0)
+        elif self.y >= 800 - self.radius or self.y <=0 + self.radius:
+            self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
+            #self.heading = math.degrees(self.heading_angle)
+            self.heading_rad = math.radians(self.heading_degrees)
 
             game_over = True
             #pygame.quit()
