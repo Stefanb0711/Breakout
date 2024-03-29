@@ -132,11 +132,21 @@ class Ball:
         elif any((self.x + self.radius - obstacle[0] < 70) and (self.x + self.radius - obstacle[0] > -10) and abs(self.y - obstacle[1]) < 20 for obstacle in obstacles):
 
             for obstacle in obstacles:
-                if abs(self.x - obstacle[0]) < 70 and abs(self.y - obstacle[1]) < 20:
-                    obstacle_to_remove = obstacle
-                    break
 
-            obstacles.remove(obstacle)
+                obstacle_center_x = obstacle[0] + 30
+                obstacle_center_y = obstacle[1] + 10
+
+                distance_x = abs(self.x - obstacle_center_x)
+                distance_y = abs(self.y - obstacle_center_y)
+
+                if distance_x < (self.radius + 30) and distance_y < (self.radius + 10):
+                    obstacles.remove(obstacle)
+
+                """if abs(self.x - obstacle[0]) < 70 and abs(self.y - obstacle[1]) < 20:
+                    obstacle_to_remove = obstacle
+                    break"""
+
+            #obstacles.remove(obstacle)
             self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
 
             self.heading_rad = math.radians(self.heading_degrees)
@@ -176,6 +186,19 @@ class Obstacles:
                 obstacle_y = random.randrange(50, 400)
 
             self.obstacles.append([obstacle_x, obstacle_y])
+
+
+class StartWindow:
+    def __init__(self):
+        self.win = pygame.display.set_mode((600, 800))
+        pygame.display.set_caption("Breakout")
+
+        self.start_game = False
+        self.clock = pygame.time.Clock()
+
+
+    def redraw_start_window(self):
+        pass
 
 
 
