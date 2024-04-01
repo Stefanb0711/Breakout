@@ -77,7 +77,7 @@ class Ball:
     def __init__(self):
 
         self.x = 400
-        self.y = 500
+        self.y = 300
         self.start_position = [self.x, self.y]
         self.heading_degrees = random.randrange(20, 160)
 
@@ -116,22 +116,29 @@ class Ball:
             #self.heading_angle = math.radians(self.heading_angle)
 
 
-        elif self.y >= 800 - self.radius or self.y <=0 + self.radius:
+
+        elif self.y >= 800 :
             self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
             #self.heading = math.degrees(self.heading_angle)
             self.heading_rad = math.radians(self.heading_degrees)
 
             game_over = True
-            #pygame.quit()
+            pygame.quit()
 
-        elif (self.x + self.radius - player.x) < 80 and (self.x + self.radius - player.x > -10) and abs(self.y - player.y) < 20:
+        elif self.y <= 0 + self.radius:
+            self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
+            # self.heading = math.degrees(self.heading_angle)
+            self.heading_rad = math.radians(self.heading_degrees)
+
+
+        elif (self.x + self.radius - player.x) <= 80 and (self.x + self.radius - player.x > -10) and abs(self.y - player.y) < 20:
             self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
 
             self.heading_rad = math.radians(self.heading_degrees)
 
-        elif any((self.x + self.radius - obstacle[0] < 70) and (self.x + self.radius - obstacle[0] > -10) and abs(self.y - obstacle[1]) < 20 for obstacle in obstacles):
+        elif any((self.x + self.radius - obstacle[0] < 90) and (self.x + self.radius - obstacle[0] > -10) and abs(self.y - obstacle[1]) < 10 for obstacle in obstacles):
 
-            for obstacle in obstacles:
+            """for obstacle in obstacles:
 
                 obstacle_center_x = obstacle[0] + 30
                 obstacle_center_y = obstacle[1] + 10
@@ -140,11 +147,9 @@ class Ball:
                 distance_y = abs(self.y - obstacle_center_y)
 
                 if distance_x < (self.radius + 30) and distance_y < (self.radius + 10):
-                    obstacles.remove(obstacle)
+                    obstacles.remove(obstacle)"""
 
-                """if abs(self.x - obstacle[0]) < 70 and abs(self.y - obstacle[1]) < 20:
-                    obstacle_to_remove = obstacle
-                    break"""
+
 
             #obstacles.remove(obstacle)
             self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
@@ -160,7 +165,7 @@ class Ball:
 
 class Obstacles:
     def __init__(self):
-        self.number_of_obstacles = 20
+        self.number_of_obstacles = 10
         self.obstacles = []
 
         self.obstacle_width = 60
@@ -180,7 +185,7 @@ class Obstacles:
             obstacle_y = random.randrange(50, 400)
 
             """"""
-            while any(abs(obstacle_x - other_obstacle[0]) < 50 and abs(obstacle_y - other_obstacle[1]) < 50 for other_obstacle in self.obstacles):
+            while any(-100 < abs(obstacle_x - other_obstacle[0]) < 100 and abs(obstacle_y - other_obstacle[1]) < 70 for other_obstacle in self.obstacles):
 
                 obstacle_x = random.randrange(20, 580)
                 obstacle_y = random.randrange(50, 400)
