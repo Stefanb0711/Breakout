@@ -131,13 +131,36 @@ class Ball:
             self.heading_rad = math.radians(self.heading_degrees)
 
 
-        elif (self.x + self.radius - player.x) <= 80 and (self.x + self.radius - player.x > -10) and abs(self.y - player.y) < 20:
+        #Abprall an Spieler
+
+        elif (self.x + self.radius - player.x) <= 110 and (self.x + self.radius - player.x > -10) and abs(self.y - player.y) < 30:
             self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
 
             self.heading_rad = math.radians(self.heading_degrees)
 
-        elif any((self.x + self.radius - obstacle[0] < 90) and (self.x + self.radius - obstacle[0] > -10) and abs(self.y - obstacle[1]) < 10 for obstacle in obstacles):
 
+        elif any((self.x + self.radius - obstacle[0] < 90) and (self.x + self.radius - obstacle[0] > -10) and abs(self.y - obstacle[1]) < 10 for obstacle in obstacles):
+            self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
+
+            self.heading_rad = math.radians(self.heading_degrees)
+
+            for obstacle in obstacles:
+                if ((self.x + self.radius - obstacle[0] < 90) and (self.x + self.radius - obstacle[0] > -10) and abs(
+                        self.y - obstacle[1]) < 10):
+                    obstacles.remove(obstacle)
+
+        elif any(
+            (self.x + self.radius >= obstacle[0] and self.x + self.radius <= obstacle[0] + 60) and
+            (abs(self.y - obstacle[1]) < 10) for obstacle in obstacles
+        ):
+            self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 90)
+
+            self.heading_rad = math.radians(self.heading_degrees)
+
+            for obstacle in obstacles:
+                if ((self.x + self.radius - obstacle[0] < 90) and (self.x + self.radius - obstacle[0] > -10) and abs(
+                        self.y - obstacle[1]) < 10):
+                    obstacles.remove(obstacle)
             """for obstacle in obstacles:
 
                 obstacle_center_x = obstacle[0] + 30
@@ -148,14 +171,6 @@ class Ball:
 
                 if distance_x < (self.radius + 30) and distance_y < (self.radius + 10):
                     obstacles.remove(obstacle)"""
-
-
-
-            #obstacles.remove(obstacle)
-            self.heading_degrees = abprallwinkel_berechnen(self.heading_degrees, 180)
-
-            self.heading_rad = math.radians(self.heading_degrees)
-
 
 
         pygame.draw.circle(surface=win, color=RED, center=(self.x, self.y), radius=self.radius)
